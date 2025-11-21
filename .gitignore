@@ -1,0 +1,28 @@
+# modeller / checkpointler
+models/
+checkpoints/
+weights/
+*.bin
+*.pt
+*.pth
+*.safetensors
+*.gguf
+*.onnx
+.idea/
+data/
+offload/
+# frontend (senin klasör adına göre)
+frontend/
+client/
+web/
+chatbot-widget/
+# diğer tipik gereksizler
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+node_modules/
+dist/
+build/
+.DS_Store
