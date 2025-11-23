@@ -1,68 +1,34 @@
 from pathlib import Path
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-import torch
-from scripts.db_utils import save_llm_answer_to_db
 import nltk
 from nltk.tokenize import sent_tokenize
-import os
-from langchain_huggingface import HuggingFaceEmbeddings  # SBERT için gerekliyse bırak
+from scripts.db_utils import save_llm_answer_to_db
+
+# Ollama OpenAI-uyumlu client
+from openai import OpenAI
 
 # -----------------------------------------------------
 # 📦 Ortak Ayarlar
 # -----------------------------------------------------
 nltk.download('punkt', quiet=True)
 
-OFFLOAD_PATH = os.path.abspath("offload")
-os.makedirs(OFFLOAD_PATH, exist_ok=True)
+# Ollama server zaten çalışıyor (sende curl 200 dönüyor)
+OLLAMA_BASE_URL = "http://localhost:11434/v1"
 
-bnb_cfg = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_compute_dtype=torch.float16
+# HF GGUF model tag’in (Ollama’da görünen isim)
+DEFAULT_OLLAMA_MODEL = "hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q8_0"
+
+client = OpenAI(
+    base_url=OLLAMA_BASE_URL,
+    api_key="ollama"  # herhangi bir string yeter
 )
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
+# Projede hâlâ "llama"/"deepseek" diye çağırıyorsun.
+# İkisini de aynı hafif Qwen modeline yönlendiriyoruz.
+MODEL_MAP = {
+    "llama": DEFAULT_OLLAMA_MODEL,
+    "deepseek": DEFAULT_OLLAMA_MODEL,
+}
 
-# -----------------------------------------------------
-# 🦙 LLaMA3 (MERGED) MODELİ
-# -----------------------------------------------------
-LLAMA_MERGED_PATH = ROOT_DIR / "models" / "llama3_merged"
-
-llama_tokenizer = AutoTokenizer.from_pretrained(LLAMA_MERGED_PATH, local_files_only=True)
-if llama_tokenizer.pad_token is None:
-    llama_tokenizer.pad_token = llama_tokenizer.eos_token
-
-llama_model = AutoModelForCausalLM.from_pretrained(
-    LLAMA_MERGED_PATH,
-    device_map="auto",
-    torch_dtype=torch.bfloat16 if torch.cuda.is_available() else torch.float16,
-    local_files_only=True,
-    offload_folder=OFFLOAD_PATH,
-    low_cpu_mem_usage=True
-).eval()
-
-print("✅ LLaMA3 (merged) başarıyla yüklendi.")
-
-# -----------------------------------------------------
-# 🧠 DEEPSEEK (MERGED) MODELİ
-# -----------------------------------------------------
-DEEPSEEK_PATH = ROOT_DIR / "models" / "deepseek_merged"
-DEEPSEEK_OFFLOAD = os.path.join(DEEPSEEK_PATH, "offload")
-os.makedirs(DEEPSEEK_OFFLOAD, exist_ok=True)
-
-deepseek_tokenizer = AutoTokenizer.from_pretrained(DEEPSEEK_PATH, local_files_only=True)
-if deepseek_tokenizer.pad_token is None:
-    deepseek_tokenizer.pad_token = deepseek_tokenizer.eos_token
-
-deepseek_model = AutoModelForCausalLM.from_pretrained(
-    DEEPSEEK_PATH,
-    device_map="auto",
-    torch_dtype=torch.bfloat16 if torch.cuda.is_available() else torch.float16,
-    local_files_only=True,
-    offload_folder=DEEPSEEK_OFFLOAD,
-    low_cpu_mem_usage=True
-).eval()
-
-print("✅ DeepSeek (merged) başarıyla yüklendi.")
 
 # -----------------------------------------------------
 # ✂️ KISA CEVAP FONKSİYONU
@@ -72,48 +38,31 @@ def shorten_answer(answer: str, max_sentences: int = 3) -> str:
     return " ".join(sentences[:max_sentences]).strip()
 
 # -----------------------------------------------------
-# 💬 CEVAP ÜRETİCİ (GENEL)
+# 💬 CEVAP ÜRETİCİ (GENEL) - OLLAMA
 # -----------------------------------------------------
 def generate_answer(prompt: str, original_question: str = None, model_name: str = "llama") -> str:
-    if model_name == "llama":
-        model = llama_model
-        tokenizer = llama_tokenizer
-    elif model_name == "deepseek":
-        model = deepseek_model
-        tokenizer = deepseek_tokenizer
-    else:
-        raise ValueError("❌ Geçersiz model adı! 'llama' veya 'deepseek' olmalı.")
-
     if not prompt.strip():
         return "⚠️ Boş bir istek girdiniz."
 
-    # 🔹 Instruction yerine sade, örnek tabanlı prompt
+    ollama_model = MODEL_MAP.get(model_name, DEFAULT_OLLAMA_MODEL)
+
+    # 🔹 Senin eski prompt formatını koruyorum
     final_prompt = f"Soru: {prompt.strip()}\nCevap:"
 
-    inputs = tokenizer(
-        final_prompt,
-        return_tensors="pt",
-        padding=True,
-        truncation=True,
-        max_length=512
-    ).to(model.device)
+    resp = client.chat.completions.create(
+        model=ollama_model,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": final_prompt},
+        ],
+        temperature=0.7,
+        top_p=0.9,
+        max_tokens=256,
+    )
 
-    with torch.no_grad():
-        outputs = model.generate(
-            input_ids=inputs["input_ids"],
-            attention_mask=inputs["attention_mask"],
-            max_new_tokens=256,
-            temperature=0.7,
-            top_p=0.9,
-            do_sample=True,
-            pad_token_id=tokenizer.eos_token_id,
-            repetition_penalty=1.2
-        )
+    answer = resp.choices[0].message.content.strip()
 
-    generated_ids = outputs[0][inputs["input_ids"].shape[-1]:]
-    answer = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
-
-    # 🧹 Gereksiz önekleri temizle
+    # 🧹 Gereksiz önekleri temizle (eski kodla aynı)
     for prefix in ["Yanıt:", "Cevap:", "Answer:", "Response:", "?", "？"]:
         if answer.startswith(prefix):
             answer = answer[len(prefix):].strip()
@@ -127,23 +76,15 @@ def generate_answer(prompt: str, original_question: str = None, model_name: str 
     return answer_limited
 
 
-
 # -----------------------------------------------------
 # 🚀 MODEL TESTİ (manuel çalıştırma için)
 # -----------------------------------------------------
 if __name__ == "__main__":
-    print("🧠 Model yükleme testi başlatılıyor...")
+    print("🧠 Ollama bağlantı testi başlatılıyor...")
 
-    # LLaMA kontrolü
     try:
-        print(f"📦 LLaMA cihaz: {next(llama_model.parameters()).device}")
+        test = generate_answer("Merhaba, kısaca kendini tanıt.", model_name="llama")
+        print("✅ Test cevabı:", test)
+        print("🚀 Ollama üzerinden model başarıyla çalışıyor!")
     except Exception as e:
-        print(f"❌ LLaMA yüklenemedi: {e}")
-
-    # DeepSeek kontrolü
-    try:
-        print(f"📦 DeepSeek cihaz: {next(deepseek_model.parameters()).device}")
-    except Exception as e:
-        print(f"❌ DeepSeek yüklenemedi: {e}")
-
-    print("🚀 Tüm modeller başarıyla yüklenmiş görünüyor!")
+        print("❌ Ollama test hatası:", e)
