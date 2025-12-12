@@ -1,8 +1,25 @@
+# Core backend
 flask
+flask-cors
 flask_sqlalchemy
 psycopg2-binary
-transformers
-sentence-transformers
-faiss-cpu
+python-dotenv
+requests
+
+# RAG / embeddings
 langchain
+langchain-community
+langchain-huggingface
+sentence-transformers
+transformers
+faiss-cpu
+rank-bm25
+
+# PDF / data
 PyMuPDF
+
+# NLP utils
+nltk
+
+# Ollama (OpenAI-compatible client)
+openai
