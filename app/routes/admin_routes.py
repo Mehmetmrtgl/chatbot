@@ -233,18 +233,22 @@ def generate_alternative_answer():
     return jsonify({"alternative": new_answer})
 
 
-# Basit örnek (güvenli olmayan, demo amaçlı)
+
 @admin_bp.route("/admin/login", methods=["POST"])
 def admin_login():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
 
-    # Gerçek uygulamada şifre hash'lenmiş şekilde veritabanından kontrol edilir
-    if username == "admin" and password == "admin123":
+    env_username = os.getenv("ADMIN_USERNAME")
+    env_password = os.getenv("ADMIN_PASSWORD")
+
+    if username == env_username and password == env_password:
         return jsonify({"status": "ok", "token": "fake-admin-token"})
     else:
         return jsonify({"status": "fail"}), 401
+    
+
 @admin_bp.route("/api/generate_alternative", methods=["POST"])
 def generate_alternative():
     question = request.json["question"]

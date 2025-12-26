@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv  
 from flask import Flask
 from flask_cors import CORS
 from app.db.models import db
@@ -7,13 +9,25 @@ from app.routes.autocomplete_routes import autocomplete_bp
 from app.routes.admin_routes import admin_bp
 from app.routes.chat_history_routes import chat_history_bp
 from app.routes.suggested_answers_routes import suggestion_bp
+
+load_dotenv()
+
 def create_app():
     app = Flask(__name__)
-    CORS(app)  # 👈 Bu satırla tüm endpoint'lere CORS açılır
+    CORS(app)
+
+    db_user = os.getenv("DB_USER")
+    db_pass = os.getenv("DB_PASSWORD")
+    db_host = os.getenv("DB_HOST")
+    db_port = os.getenv("DB_PORT")
+    db_name = os.getenv("DB_NAME")
+
 
     app.config["SQLALCHEMY_DATABASE_URI"] = (
-        "postgresql://postgres:123456@localhost:5432/hu_chatbot2"
+        f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
     )
+    
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "varsayilan-guvensiz-key")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)
@@ -23,13 +37,9 @@ def create_app():
     app.register_blueprint(autocomplete_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(chat_history_bp)
-
-
     app.register_blueprint(suggestion_bp)
 
     return app
-
-
 
 if __name__ == "__main__":
     flask_app = create_app()

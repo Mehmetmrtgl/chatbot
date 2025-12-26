@@ -1,27 +1,25 @@
 [
-
   {
     "question": "Kütüphane Üyelik Formuna Nasıl Erişebilirim",
     "answer": "Hacettepe Üniversitesi üyelik ve ödünç verme sözleşmemiz bulunmaktadır.Bu koşullara kütüphane web sayfamızdaki 'Kütüphane Üyelik Formundan erişebilirsiniz.'"
   },
   {
     "question": "Kütüphane Üyelik Formu Sözleşme Koşulları nelerdir",
-    "answer":[
+    "answer": [
       "Ödünç verme hizmetlerinden yararlanmak için kütüphaneye üye olmak gerekir.",
-    "Üyelik ve ödünç verme işlemleri, H.Ü. Kimlik Kartları ile yapılabilir.",
-    "Başkasının adına ya da kimliği ile üyelik ve ödünç verme işlemleri yapılamaz.",
-    "Ödünç alınan kaynakların, zarar görmeden ve belirtilen zamanda iade edilmesi, kullanıcının sorumluluğundadır.",
-    "Kullanıcılar aldıkları kaynakların iade etme tarihlerini takip etmekle yükümlüdürler.",
-    "Kullanıcılar 'Kütüphane Hesabım' için kendileri şifre oluştruracaktır.",
-    "İadesi geciken her bir kaynak için günlük gecikme ücreti alınır.",
-    "Üzerinde gecikme cezası bulunan kullanıcılar gecikme bedelini ödemedikleri takdirde Strateji Daire Başkanlığı tarafından cezaları tahsil edilecektir.",
-    "Gecikme cezaları POS cihazı ile kullanıcıların kurum kimlikleri üzerinden veya havale/EFT yoluyla alınmaktadır.",
-    "Kaybolan, iade edilmeyen ya da zarar gören kaynaklar için kullanıcı aynısını sağlamakla yükümlüdür. Piyasada aynısı bulunmaz ise kaynağın yeni baskısı veya ilgili kütüphaneci tarafından belirlenen eşdeğer bir kaynak sağlanır.",
-    "Üzerinde gecikmiş kaynağı ya da cezası bulunan kullanıcılar, ödünç verme hizmetlerinden yararlanamazlar.",
-    "Üyelik formunda belirtilen e-posta hesabınız, kütüphane eğitim/etkinlik vb. duyurularda bilgilendirme amaçlı kullanılabilir.",
-"Diğer tüm bilgiler ve ödünç alma yükümlülükleri için 'http://193.140.216.118/phpinfo/form/Informascope/library_main.php'adresin ziyaret edebilirsiniz."
-
-  ]
+      "Üyelik ve ödünç verme işlemleri, H.Ü. Kimlik Kartları ile yapılabilir.",
+      "Başkasının adına ya da kimliği ile üyelik ve ödünç verme işlemleri yapılamaz.",
+      "Ödünç alınan kaynakların, zarar görmeden ve belirtilen zamanda iade edilmesi, kullanıcının sorumluluğundadır.",
+      "Kullanıcılar aldıkları kaynakların iade etme tarihlerini takip etmekle yükümlüdürler.",
+      "Kullanıcılar 'Kütüphane Hesabım' için kendileri şifre oluştruracaktır.",
+      "İadesi geciken her bir kaynak için günlük gecikme ücreti alınır.",
+      "Üzerinde gecikme cezası bulunan kullanıcılar gecikme bedelini ödemedikleri takdirde Strateji Daire Başkanlığı tarafından cezaları tahsil edilecektir.",
+      "Gecikme cezaları POS cihazı ile kullanıcıların kurum kimlikleri üzerinden veya havale/EFT yoluyla alınmaktadır.",
+      "Kaybolan, iade edilmeyen ya da zarar gören kaynaklar için kullanıcı aynısını sağlamakla yükümlüdür. Piyasada aynısı bulunmaz ise kaynağın yeni baskısı veya ilgili kütüphaneci tarafından belirlenen eşdeğer bir kaynak sağlanır.",
+      "Üzerinde gecikmiş kaynağı ya da cezası bulunan kullanıcılar, ödünç verme hizmetlerinden yararlanamazlar.",
+      "Üyelik formunda belirtilen e-posta hesabınız, kütüphane eğitim/etkinlik vb. duyurularda bilgilendirme amaçlı kullanılabilir.",
+      "Diğer tüm bilgiler ve ödünç alma yükümlülükleri için 'http://193.140.216.118/phpinfo/form/Informascope/library_main.php'adresin ziyaret edebilirsiniz."
+    ]
   },
   {
     "question": "Kütüphane Hesabıma nasıl erişebilirim?",
@@ -64,116 +62,115 @@
     "answer": "Beytepe Kütüphanesi iletişim bilgileri:03122976155 daha detaylı bilgi için 'https://library.hacettepe.edu.tr/iletisim/' adresini kullanabilirsiniz."
   },
   {
-    "question":"hacettepe üniversitesinde engelsiz kütüphane imkanı var mıdır?",
-    "answer":"evet hacettepe üniversitesi kütüphaneleri,  engelli kullanıcıların, kütüphane olanaklarından en üst düzeyde yararlanmalarını sağlamaya yönelik donanım ve hizmetler sunmaktadır."
+    "question": "hacettepe üniversitesinde engelsiz kütüphane imkanı var mıdır?",
+    "answer": "evet hacettepe üniversitesi kütüphaneleri,  engelli kullanıcıların, kütüphane olanaklarından en üst düzeyde yararlanmalarını sağlamaya yönelik donanım ve hizmetler sunmaktadır."
   },
   {
-    "question":"hacettepe üniversitesinde engelsiz kütüphane için fiziksel ve sosyal olanaklar nelerdir",
-    "answer":"Engelli giriş yolları,Engelli grup çalışma odası,Kütüphanenin bütün katlarını kullanabilecekleri asansör,Engelli tuvaleti gibi imkanları bulunmaktadır."
+    "question": "hacettepe üniversitesinde engelsiz kütüphane için fiziksel ve sosyal olanaklar nelerdir",
+    "answer": "Engelli giriş yolları,Engelli grup çalışma odası,Kütüphanenin bütün katlarını kullanabilecekleri asansör,Engelli tuvaleti gibi imkanları bulunmaktadır."
   },
   {
-    "question":"hacettepe üniversitesinde engelsiz kütüphane için teknik donanım imkanları var mıdır",
-    "answer":"tabiki,Ekran Okuma Programı (JAWS),Doküman Okuyucu ( PEARL),Abbyy Fine Reader ,Kulaklık,TarayıcıBilgisayar (Masaüstü / Dizüstü ) gibi donanım ve programlar gör-işit salonu ve engelli çalışma odasında kullanılabilir"
+    "question": "hacettepe üniversitesinde engelsiz kütüphane için teknik donanım imkanları var mıdır",
+    "answer": "tabiki,Ekran Okuma Programı (JAWS),Doküman Okuyucu ( PEARL),Abbyy Fine Reader ,Kulaklık,TarayıcıBilgisayar (Masaüstü / Dizüstü ) gibi donanım ve programlar gör-işit salonu ve engelli çalışma odasında kullanılabilir"
   },
   {
-    "question":"hacettepe üniversitesinde engelsiz kütüphane için rehberlik ve özel tanıtım hizmetleri mevcut mudur?",
-    "answer":"Engelli Hizmetleri Koordinatörlüğü tarafından kütüphanenin fiziksel alanlarının tanıtımı, teknik donanımın kullanımı, elektronik kaynak ve hizmetlerinin içeriği ile ilgili rehberlik ve tanıtım hizmetleri verilmektedir."
+    "question": "hacettepe üniversitesinde engelsiz kütüphane için rehberlik ve özel tanıtım hizmetleri mevcut mudur?",
+    "answer": "Engelli Hizmetleri Koordinatörlüğü tarafından kütüphanenin fiziksel alanlarının tanıtımı, teknik donanımın kullanımı, elektronik kaynak ve hizmetlerinin içeriği ile ilgili rehberlik ve tanıtım hizmetleri verilmektedir."
   },
   {
-    "question":"hacettepe üniversitesinde engelsiz kütüphane içi iletişim nasıl kurabilirim",
-    "answer":"'engelsizkutuphane@hacettepe.edu.tr' maili ile aynı zamanda beytepe kampüsündeki engelli hizmetleri koordinatörlüğü ile iletişim kurulabilir"
-  },
-   {
-    "question":"Beytepe kütüphanesi ne zaman kuruldu",
-    "answer":"Kütüphane, 1975 yılında Beytepe Yerleşkesi'nin kurulmasıyla Sıhhiye Yerleşkesi Kütüphanesinden ayrılarak geçici bir binada hizmet vermeye başlamıştır. Binanın tamamlanmasıyla 22 Ağustos 1977 yılından itibaren şimdiki binasında hizmet vermektedir."
-   },
-
- {
-    "question":"sağlık bilimleri kütüphanesi ne zaman kuruldu",
-    "answer":"1958 yılında Çocuk Hastanesi içerisinde kurulan kütüphane 1967 yılında Hacettepe Üniversitesi’nin kurulması ile Hacettepe Üniversitesi Kütüphanesi adını almıştır. 1977 yılında Beytepe Yerleşkesi'nde kütüphane binasının tamamlanmasıyla kütüphane ikiye ayrılarak Beytepe ve Tıp Kütüphanesi oluşturulmuştur. H.Ü. Morfoloji binasında hizmet vermeye başlayan kütüphane binanın yeterli gelmemesi nedeniyle 2003 yılında şimdiki yerine taşınmıştır."
-   },
-   {
-    "question":"konservatuar kütüphanesi ne zaman kuruldu",
-    "answer":"Ankara Devlet Konservatuvarı Kütüphanesi'nin temeli 1924 yılında açılan Musiki Muallim Mektebi’ ne dayanmaktadır. 1936 yılında mektep içerisinde Devlet Konservatuvarının kurulmasıyla Mektep Kütüphanesi'nde bulunan koleksiyon Konservatuvara devredilmiştir. 1982 yılına kadar Kültür ve Turizm Bakanlığı'na bağlı olarak eğitim veren Ankara Devlet Konservatuvarı ve kütüphanesi, aynı yıl Yüksek Öğrenim Kurumu kapsamına alınarak Hacettepe Üniversitesi'ne bağlanmıştır."
-   },
-   {
-    "question":"hukuk fakültesi kütüphanesi ne zaman kuruldu",
-    "answer":"Kütüphane, 2021 yılında Beytepe Yerleşkesinde Hukuk Fakültesi binası içinde hizmet vermeye başlamıştır."
-   },
-   {
-    "question":"beytepe kütüphanesi çalışma saatleri neler",
-    "answer":"beytepe kütüphanesi 7/24 açıktır."
-   },
-   {
-    "question":"sağlık bilimleri kütüphanesi çalışma saatleri neler",
-    "answer":"sağlık bilimleri  kütüphanesi 7/24 açıktır."
-   },
-   {
-    "question":"konservatuar kütüphanesi çalışma saatleri neler",
-    "answer":"konservatuar kütüphanesi haftaiçi:09:00/17:00 saatleri arasında açık,haftasonu kapalıdır."
-   },
-   {
-    "question":"hukuk fakültesi kütüphanesi çalışma saatleri neler",
-    "answer":"hukuk fakültesi kütüphanesi haftaiçi:09:00/17:00 saatleri arasında açık,haftasonu kapalıdır."
-   },
-   {
-    "question":"kütüphane çalışma saatleri neler",
-    "answer":"beytepe ve sağlık bilimleri kütüphaneleri 7/24 açıkken, konservatuar ve hukuk fakültesi kütüphaneleri haftaiçi:09:00/17:00 saatleri arasında açık,haftasonu kapalıdır."
-   },
-   {
-    "question":"kütüphane ile ilgili öneri,görüş ya da şikayetlerimi nasıl bildirebilirim?",
-    "answer":"'https://library.hacettepe.edu.tr/istek/' adresi üzerinden formu doldurarak bildirimde bulunabilirsiniz."
-   },
-   {
-    "question":"kütüphanelerde araştırma yapmak için bilgisayarlar var mıdır?",
-    "answer":["Beytepe Kütüphanesi ve Sağlık Bilimleri Kütüphanesi genel okuma salonları ve bilgisayar laboratuvarlarında, bilimsel araştırmaya ve e-kaynakların kullanımına yönelik bilgisayarlar bulunmaktadır.",
-   "Genel okuma salonlarında bulunan bilgisayarlardan, kütüphane kataloğunu taramak ve e-kaynaklara erişmek mümkündür.",
-   "Laboratuvarlarda bulunan bilgisayarlar ise, internete erişim açısından, araştırma, eğitim ve bilimsel çalışmalara öncelik verecek şekilde tanımlanmıştır."
-  ]
+    "question": "hacettepe üniversitesinde engelsiz kütüphane içi iletişim nasıl kurabilirim",
+    "answer": "'engelsizkutuphane@hacettepe.edu.tr' maili ile aynı zamanda beytepe kampüsündeki engelli hizmetleri koordinatörlüğü ile iletişim kurulabilir"
   },
   {
-    "question":"kütüphanelerde kablosuz ağ mevcut mudur",
-    "answer":"Beytepe Kütüphanesi ve Sağlık Bilimleri Kütüphanesi'nde kablosuz ağ bağlantısı bulunmaktadır. Kütüphanelerde kullanılacak bağlantı şifresi, Hacettepe mensubu araştırmacılar için Hacettepe e-posta adresinin kullanıcı adı ve şifresi, diğer araştırmacılar için ziyaretçi şifresidir."
-   },
-   {
-    "question":"kütüphanelerde tarayıcı mevcut mudur",
-    "answer":"Beytepe ve Sağlık Bilimleri Kütüphanelerinde 7/24, Hukuk Fakültesi Kütüphanesinde hafta içi 09:00 - 16:30 saatleri arasında hizmete sunulan tarayıcı cihazı kullanılarak;Basılı kaynaklar ders ve araştırma notları ücretsiz ve yüksek kalitede taranarak elektronik kopyası alınabilir ve Tarayıcıdan geçirilen kaynaklar USB’ye aktarılabilir. "
-   },
-   {
-    "question":"kütüphanelerde tarayıcı ücetli midir",
-    "answer":"hayır, tarama ücretsizdir."
-   },
-   {
-    "question":"kütüphanelerde fotokopi veya çıktı hizmeti bulunmakta mıdır",
-    "answer":"hayır, fotokopi ve çıktı hizmetimiz yoktur. Yalnızca tarama yapılabilmektedir."
-   },
-   {
-    "question":"kütüphanelerde çalışma salonu bulunuyor mu",
-    "answer":"beytepe kütüphanesinde ders çalışma, e-kaynaklardan yararlanma ve kablosuz internet erişiminin sağlandığı çalışma salonları mevcuttur.7/24 açıktır."
-   },
-   {
-    "question":"kütüphanelerde sanat odası bulunuyor mu",
-    "answer":"evet,Beytepe Kütüphanesi koleksiyonunda bulunan 8000’e yakın mimarlık, çizim, heykel, resim, dekorasyon ve fotoğrafçılık konulu kitap Sanat Odasında kullanıma sunulmaktadır."
-   },
-   {
-    "question":"sanat odasından nasıl yararlanabilirim",
-    "answer":"Sanat koleksiyonu, sadece Sanat Odasında kullanılabilir,H.Ü. mensubu akademisyenlere ödünç verilebilir ve Tarayıcıdan geçirilen kaynaklar USB'ye aktarılabilir."
-   },
-   {
-    "question":"sanat odası kapasitesi var mıdır",
-    "answer":"oturma kapasitesi 12 kişidir."
-   },
-   {
-    "question":"sanat odası çalışma saatleri",
-    "answer":"Hafta İçi: 08:30-17:00 arasında açık olup, Hafta Sonu: Kapalıdır"
-   },
-   {
-    "question":"çok amaçlı salonlarda bilgisayar kaç tane",
-    "answer":"çok amaçlı salonlarda 125 bilgisayar bulunmaktadır."
-   },
-   {
-    "question":"çok amaçlı salonlarda oturma kapasitesi ne kadar",
-    "answer":"çok amaçlı salonlarda 262 kişilik oturma kapasitesi mevcuttur."
-   }
-
-  ]
+    "question": "Beytepe kütüphanesi ne zaman kuruldu",
+    "answer": "Kütüphane, 1975 yılında Beytepe Yerleşkesi'nin kurulmasıyla Sıhhiye Yerleşkesi Kütüphanesinden ayrılarak geçici bir binada hizmet vermeye başlamıştır. Binanın tamamlanmasıyla 22 Ağustos 1977 yılından itibaren şimdiki binasında hizmet vermektedir."
+  },
+  {
+    "question": "sağlık bilimleri kütüphanesi ne zaman kuruldu",
+    "answer": "1958 yılında Çocuk Hastanesi içerisinde kurulan kütüphane 1967 yılında Hacettepe Üniversitesi’nin kurulması ile Hacettepe Üniversitesi Kütüphanesi adını almıştır. 1977 yılında Beytepe Yerleşkesi'nde kütüphane binasının tamamlanmasıyla kütüphane ikiye ayrılarak Beytepe ve Tıp Kütüphanesi oluşturulmuştur. H.Ü. Morfoloji binasında hizmet vermeye başlayan kütüphane binanın yeterli gelmemesi nedeniyle 2003 yılında şimdiki yerine taşınmıştır."
+  },
+  {
+    "question": "konservatuar kütüphanesi ne zaman kuruldu",
+    "answer": "Ankara Devlet Konservatuvarı Kütüphanesi'nin temeli 1924 yılında açılan Musiki Muallim Mektebi’ ne dayanmaktadır. 1936 yılında mektep içerisinde Devlet Konservatuvarının kurulmasıyla Mektep Kütüphanesi'nde bulunan koleksiyon Konservatuvara devredilmiştir. 1982 yılına kadar Kültür ve Turizm Bakanlığı'na bağlı olarak eğitim veren Ankara Devlet Konservatuvarı ve kütüphanesi, aynı yıl Yüksek Öğrenim Kurumu kapsamına alınarak Hacettepe Üniversitesi'ne bağlanmıştır."
+  },
+  {
+    "question": "hukuk fakültesi kütüphanesi ne zaman kuruldu",
+    "answer": "Kütüphane, 2021 yılında Beytepe Yerleşkesinde Hukuk Fakültesi binası içinde hizmet vermeye başlamıştır."
+  },
+  {
+    "question": "beytepe kütüphanesi çalışma saatleri neler",
+    "answer": "beytepe kütüphanesi 7/24 açıktır."
+  },
+  {
+    "question": "sağlık bilimleri kütüphanesi çalışma saatleri neler",
+    "answer": "sağlık bilimleri  kütüphanesi 7/24 açıktır."
+  },
+  {
+    "question": "konservatuar kütüphanesi çalışma saatleri neler",
+    "answer": "konservatuar kütüphanesi haftaiçi:09:00/17:00 saatleri arasında açık,haftasonu kapalıdır."
+  },
+  {
+    "question": "hukuk fakültesi kütüphanesi çalışma saatleri neler",
+    "answer": "hukuk fakültesi kütüphanesi haftaiçi:09:00/17:00 saatleri arasında açık,haftasonu kapalıdır."
+  },
+  {
+    "question": "kütüphane çalışma saatleri neler",
+    "answer": "beytepe ve sağlık bilimleri kütüphaneleri 7/24 açıkken, konservatuar ve hukuk fakültesi kütüphaneleri haftaiçi:09:00/17:00 saatleri arasında açık,haftasonu kapalıdır."
+  },
+  {
+    "question": "kütüphane ile ilgili öneri,görüş ya da şikayetlerimi nasıl bildirebilirim?",
+    "answer": "'https://library.hacettepe.edu.tr/istek/' adresi üzerinden formu doldurarak bildirimde bulunabilirsiniz."
+  },
+  {
+    "question": "kütüphanelerde araştırma yapmak için bilgisayarlar var mıdır?",
+    "answer": [
+      "Beytepe Kütüphanesi ve Sağlık Bilimleri Kütüphanesi genel okuma salonları ve bilgisayar laboratuvarlarında, bilimsel araştırmaya ve e-kaynakların kullanımına yönelik bilgisayarlar bulunmaktadır.",
+      "Genel okuma salonlarında bulunan bilgisayarlardan, kütüphane kataloğunu taramak ve e-kaynaklara erişmek mümkündür.",
+      "Laboratuvarlarda bulunan bilgisayarlar ise, internete erişim açısından, araştırma, eğitim ve bilimsel çalışmalara öncelik verecek şekilde tanımlanmıştır."
+    ]
+  },
+  {
+    "question": "kütüphanelerde kablosuz ağ mevcut mudur",
+    "answer": "Beytepe Kütüphanesi ve Sağlık Bilimleri Kütüphanesi'nde kablosuz ağ bağlantısı bulunmaktadır. Kütüphanelerde kullanılacak bağlantı şifresi, Hacettepe mensubu araştırmacılar için Hacettepe e-posta adresinin kullanıcı adı ve şifresi, diğer araştırmacılar için ziyaretçi şifresidir."
+  },
+  {
+    "question": "kütüphanelerde tarayıcı mevcut mudur",
+    "answer": "Beytepe ve Sağlık Bilimleri Kütüphanelerinde 7/24, Hukuk Fakültesi Kütüphanesinde hafta içi 09:00 - 16:30 saatleri arasında hizmete sunulan tarayıcı cihazı kullanılarak;Basılı kaynaklar ders ve araştırma notları ücretsiz ve yüksek kalitede taranarak elektronik kopyası alınabilir ve Tarayıcıdan geçirilen kaynaklar USB’ye aktarılabilir. "
+  },
+  {
+    "question": "kütüphanelerde tarayıcı ücetli midir",
+    "answer": "hayır, tarama ücretsizdir."
+  },
+  {
+    "question": "kütüphanelerde fotokopi veya çıktı hizmeti bulunmakta mıdır",
+    "answer": "hayır, fotokopi ve çıktı hizmetimiz yoktur. Yalnızca tarama yapılabilmektedir."
+  },
+  {
+    "question": "kütüphanelerde çalışma salonu bulunuyor mu",
+    "answer": "beytepe kütüphanesinde ders çalışma, e-kaynaklardan yararlanma ve kablosuz internet erişiminin sağlandığı çalışma salonları mevcuttur.7/24 açıktır."
+  },
+  {
+    "question": "kütüphanelerde sanat odası bulunuyor mu",
+    "answer": "evet,Beytepe Kütüphanesi koleksiyonunda bulunan 8000’e yakın mimarlık, çizim, heykel, resim, dekorasyon ve fotoğrafçılık konulu kitap Sanat Odasında kullanıma sunulmaktadır."
+  },
+  {
+    "question": "sanat odasından nasıl yararlanabilirim",
+    "answer": "Sanat koleksiyonu, sadece Sanat Odasında kullanılabilir,H.Ü. mensubu akademisyenlere ödünç verilebilir ve Tarayıcıdan geçirilen kaynaklar USB'ye aktarılabilir."
+  },
+  {
+    "question": "sanat odası kapasitesi var mıdır",
+    "answer": "oturma kapasitesi 12 kişidir."
+  },
+  {
+    "question": "sanat odası çalışma saatleri",
+    "answer": "Hafta İçi: 08:30-17:00 arasında açık olup, Hafta Sonu: Kapalıdır"
+  },
+  {
+    "question": "çok amaçlı salonlarda bilgisayar kaç tane",
+    "answer": "çok amaçlı salonlarda 125 bilgisayar bulunmaktadır."
+  },
+  {
+    "question": "çok amaçlı salonlarda oturma kapasitesi ne kadar",
+    "answer": "çok amaçlı salonlarda 262 kişilik oturma kapasitesi mevcuttur."
+  }
+]

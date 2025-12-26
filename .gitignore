@@ -9,7 +9,7 @@ weights/
 *.gguf
 *.onnx
 .idea/
-
+.env
 offload/
 # frontend (senin klasör adına göre)
 frontend/
