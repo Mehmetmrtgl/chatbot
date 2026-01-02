@@ -247,7 +247,6 @@ def admin_login():
         return jsonify({"status": "ok", "token": "fake-admin-token"})
     else:
         return jsonify({"status": "fail"}), 401
-    
 
 @admin_bp.route("/api/generate_alternative", methods=["POST"])
 def generate_alternative():
@@ -260,8 +259,7 @@ def reject_answer(question_id):
     if not question:
         return jsonify({"error": "Soru bulunamadı"}), 404
 
-    # Sil veya is_approved=False olarak güncelle
-    db.session.delete(question)  # alternatif: question.is_approved = False
+    db.session.delete(question)  
     db.session.commit()
     return jsonify({"success": True})
 @admin_bp.route("/api/mark_for_edit", methods=["POST"])
@@ -275,7 +273,7 @@ def mark_for_edit():
         return jsonify({"error": "Soru bulunamadı"}), 404
 
     question.answer = answer
-    question.approved = False  # Cevap düzenleyici sayfasına düşmesi için
+    question.approved = False  
     db.session.commit()
 
     return jsonify({"success": True})
