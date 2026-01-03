@@ -28,7 +28,7 @@ class ChatLog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    role = db.Column(db.String, nullable=False)  # "user" veya "bot"
+    role = db.Column(db.String, nullable=False)  # "user", "assistant", or "system"
     message = db.Column(db.Text, nullable=False)
     session_id = db.Column(db.String, nullable=False)  # Kullanıcıyı ayırt etmek için
 

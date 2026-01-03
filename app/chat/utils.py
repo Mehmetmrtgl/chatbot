@@ -84,12 +84,12 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
 
     if normalized_input in ["merhaba", "selam", "nasilsin", "iyi gunler"]:
         greeting_response = "Merhaba! Size nasıl yardımcı olabilirim? Kütüphane ile ilgili sorularınızı sorabilirsiniz."
-        log_chat_message("bot", greeting_response, session_id)
+        log_chat_message("assistant", greeting_response, session_id)
         return {"status": "greeting", "answer": greeting_response}
 
     if is_exit_phrase(user_question):
         farewell = "Rica ederim, görüşmek üzere!"
-        log_chat_message("bot", farewell, session_id)
+        log_chat_message("assistant", farewell, session_id)
         print("🟠 Sohbet bitirici ifade algılandı.")
         return {"status": "ended", "answer": farewell}
 
@@ -98,12 +98,12 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
 
     db_answer = get_answer_from_db(normalized_input)
     if db_answer:
-        log_chat_message("bot", db_answer["answer"], session_id)
+        log_chat_message("assistant", db_answer["answer"], session_id)
         return {"status": "from_db", "answer": db_answer, "question_id": db_answer["id"]}
 
     if is_in_finetune_data(normalized_input):
         answer = generate_answer(user_question, original_question=user_question)
-        log_chat_message("bot", answer, session_id)
+        log_chat_message("assistant", answer, session_id)
         return {"status": "from_finetune", "answer": answer}
 
     rag_context = get_context_from_faiss(user_question)
@@ -116,7 +116,7 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
         fallback_msg = "Bu soruya doğrudan bir cevap bulunamadı."
         if top_text:
             fallback_msg += f" Bunu mu demek istediniz: {top_text}"
-        log_chat_message("bot", fallback_msg, session_id)
+        log_chat_message("assistant", fallback_msg, session_id)
         return {
             "status": "no_answer",
             "message": fallback_msg,
@@ -132,7 +132,7 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
         "Yanıtta sadece verilen bağlam bilgisini ve önceki sohbeti kullan. "
         "Yanıt tamamen **Türkçe** olmali, İngilizce kelime veya cümle **kullanma**. "
         "Konu dışı sorular için 'Bu konuda bir fikrim yok.' yaz. "
-        "Yanıtı maksimum 3 kısa cümleyle sınırla.\n\n"
+        # "Yanıtı maksimum 3 kısa cümleyle sınırla.\n\n"
         f"Önceki Sohbet:\n{history_text}\n\n"
         f"Bağlam:\n{rag_context_short}\n\n"
         f"Soru: {user_question}\nCevap:"
@@ -145,7 +145,7 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
         similar_questions = get_similar_questions(normalized_input)
         suggestion = similar_questions[0] if similar_questions else ""
         msg = "Bu konuda emin değilim. Şunu mu demek istediniz?"
-        log_chat_message("bot", msg, session_id)
+        log_chat_message("assistant", msg, session_id)
         return {
             "status": "low_quality_rag",
             "answer": msg,
@@ -153,7 +153,7 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
         }
 
     question_id = save_llm_answer_to_db(user_question, final_answer)
-    log_chat_message("bot", final_answer, session_id)
+    log_chat_message("assistant", final_answer, session_id)
 
     return {
         "status": "from_rag",

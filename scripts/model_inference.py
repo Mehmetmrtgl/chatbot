@@ -9,7 +9,15 @@ from openai import OpenAI
 # -----------------------------------------------------
 # 📦 Ortak Ayarlar
 # -----------------------------------------------------
-nltk.download('punkt', quiet=True)
+# Download NLTK tokenizer data (punkt_tab is the newer version, punkt is legacy)
+try:
+    nltk.download('punkt_tab', quiet=True)
+except:
+    # Fallback to punkt if punkt_tab fails
+    try:
+        nltk.download('punkt', quiet=True)
+    except:
+        pass  # Continue even if download fails
 
 # Ollama server zaten çalışıyor (sende curl 200 dönüyor)
 OLLAMA_BASE_URL = "http://localhost:11434/v1"
@@ -57,7 +65,7 @@ def generate_answer(prompt: str, original_question: str = None, model_name: str 
         ],
         temperature=0.7,
         top_p=0.9,
-        max_tokens=256,
+        max_tokens=2048,
     )
 
     answer = resp.choices[0].message.content.strip()
@@ -67,7 +75,8 @@ def generate_answer(prompt: str, original_question: str = None, model_name: str 
         if answer.startswith(prefix):
             answer = answer[len(prefix):].strip()
 
-    answer_limited = shorten_answer(answer)
+    # answer_limited = shorten_answer(answer)
+    answer_limited = answer
 
     if original_question and len(answer_limited) > 5:
         print(f"📥 [{model_name}] Kaydediliyor: {original_question} → {answer_limited}")
