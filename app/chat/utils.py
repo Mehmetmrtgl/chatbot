@@ -99,15 +99,43 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
     db_answer = get_answer_from_db(normalized_input)
     if db_answer:
         log_chat_message("assistant", db_answer["answer"], session_id)
-        return {"status": "from_db", "answer": db_answer, "question_id": db_answer["id"]}
+        return {"status": "from_db", "answer": db_answer, "question_id": db_answer["id"], "resource":None}
 
     if is_in_finetune_data(normalized_input):
         answer = generate_answer(user_question, original_question=user_question)
         log_chat_message("assistant", answer, session_id)
-        return {"status": "from_finetune", "answer": answer}
+        return {"status": "from_finetune", "answer": answer, "resource":None}
 
-    rag_context = get_context_from_faiss(user_question)
+    rag_data = get_context_from_faiss(user_question)
+    # BU İKİ SATIRI KOPYALA VE TAM BURAYA YAPIŞTIR:
+    print("📢 DEBUG - RAG DATA TİPİ:", type(rag_data))
+    print("📢 DEBUG - RAG DATA İÇERİĞİ:", rag_data) 
+    # ----------------------------------------------
+    rag_context = ""
+    source_info = None 
+
+    # Gelen veri sözlük mü (yeni yapı) yoksa düz yazı mı (eski yapı)?
+    if isinstance(rag_data, dict):
+        rag_context = rag_data.get("text", "")
+        # Metadata içinden kaynak ismini çekiyoruz
+        metadata = rag_data.get("metadata", {})
+        source_name = metadata.get("source", "Bilinmeyen Kaynak")
+        page_num = metadata.get("page", None)
+        
+        # Frontend'e gidecek kaynak objesi
+        source_info = {
+            "name": source_name,
+            "type": "pdf",
+            "page": page_num
+        }
+        
+    else:
+        # Eğer eskisi gibi sadece string geliyorsa
+        rag_context = str(rag_data)
+        source_info = None
+
     rag_context_short = "\n\n".join(rag_context.split("\n\n")[:1]).strip()
+    
 
     if not rag_context_short:
         all_q = get_all_questions()
@@ -168,5 +196,6 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
         "answer": final_answer,
         "question_id": pending_entry.id, 
         "context": rag_context_short,
-        "quality": quality
+        "quality": quality,
+        "resource": source_info
     }
