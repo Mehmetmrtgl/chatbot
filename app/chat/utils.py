@@ -1,9 +1,9 @@
-from scripts.db_utils import get_answer_from_db, get_chat_history, save_llm_answer_to_db, get_all_questions
+from scripts.db_utils import get_answer_from_db, get_chat_history, get_all_questions
 from scripts.rag_utils import get_context_from_faiss
 from scripts.faiss_utils import get_similar_questions, get_similar_questions_hybrid
 from scripts.model_inference import generate_answer
 from scripts.finetune_lookup import is_in_finetune_data
-from app.db.models import ChatLog, db
+from app.db.models import ChatLog, db, PendingQuestion
 from sentence_transformers import SentenceTransformer
 from datetime import datetime
 import unicodedata
@@ -152,13 +152,21 @@ def answer_user_question(user_question: str, session_id: str = "default_user", c
             "suggestions": [suggestion] if suggestion else []
         }
 
-    question_id = save_llm_answer_to_db(user_question, final_answer)
+    pending_entry = PendingQuestion(
+        question=user_question,
+        answer=final_answer,
+        suggested_source="llm_rag"  
+    )
+    db.session.add(pending_entry)
+    db.session.commit()
+
     log_chat_message("assistant", final_answer, session_id)
+
 
     return {
         "status": "from_rag",
         "answer": final_answer,
-        "question_id": question_id,
+        "question_id": pending_entry.id, 
         "context": rag_context_short,
         "quality": quality
     }

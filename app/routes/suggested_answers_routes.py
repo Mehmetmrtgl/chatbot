@@ -13,15 +13,15 @@ from app.chat.utils import normalize_input
 @suggestion_bp.route("/api/suggested_questions", methods=["POST"])
 def dynamic_suggestions():
     try:
-        # 1. İstekten gelen son soru alınır
+
         data = request.get_json()
         last_question = data.get("last_question", "")
         normalized = normalize_input(last_question)
 
-        # 2. Benzer sorular FAISS ile çekilir
+
         faiss_suggestions = get_similar_questions(normalized)[:2] if normalized else []
 
-        # 3. Eğitim verisinden rastgele 3 soru ekle
+
         file_path = os.path.join("data", "finetune", "so.jsonl")
         with open(file_path, "r", encoding="utf-8") as f:
             prompts = [json.loads(line)["prompt"] for line in f if "prompt" in json.loads(line)]

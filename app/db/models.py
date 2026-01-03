@@ -6,10 +6,10 @@ db = SQLAlchemy()
 class Question(db.Model):
     __tablename__ = "questions"
     id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.Text, nullable=False, unique=True)  # ✅ doğru isim
+    question = db.Column(db.Text, nullable=False, unique=True)  
     answer = db.Column(db.Text)
     is_approved = db.Column(db.Boolean, default=False)
-    source = db.Column(db.String(20), default="manual")  # default doğru
+    source = db.Column(db.String(20), default="manual")  
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     model_quality_score = db.Column(db.Integer)
 
@@ -19,7 +19,7 @@ class Feedback(db.Model):
     __tablename__ = "feedback"
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey("questions.id", ondelete="CASCADE"))
-    feedback_type = db.Column(db.String)  # ← bu alan eksikse hata alırsın
+    feedback_type = db.Column(db.String)  
     session_id = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -28,9 +28,20 @@ class ChatLog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    role = db.Column(db.String, nullable=False)  # "user", "assistant", or "system"
+    role = db.Column(db.String, nullable=False)  
     message = db.Column(db.Text, nullable=False)
-    session_id = db.Column(db.String, nullable=False)  # Kullanıcıyı ayırt etmek için
+    session_id = db.Column(db.String, nullable=False)  
 
     def __repr__(self):
         return f"<ChatLog {self.timestamp} {self.role}: {self.message[:30]}>"
+        
+        
+        
+class PendingQuestion(db.Model):
+    __tablename__ = "pending_questions"
+
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.Text, nullable=False)
+    answer = db.Column(db.Text)  
+    suggested_source = db.Column(db.String(50), default="user_web")
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)

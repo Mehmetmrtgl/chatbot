@@ -1,7 +1,7 @@
 # app/routes/feedback_routes.py
 
 from flask import Blueprint, request, jsonify
-from app.db.models import db, Feedback, Question  # Question modelini de kontrol için al
+from app.db.models import db, Feedback, Question  
 from datetime import datetime
 
 feedback_bp = Blueprint("feedback", __name__)
@@ -10,7 +10,7 @@ feedback_bp = Blueprint("feedback", __name__)
 def store_feedback():
     data = request.get_json()
     question_id = data.get("question_id")
-    is_liked = data.get("is_liked")  # true / false bekleniyor
+    is_liked = data.get("is_liked")  
 
     if question_id is None or is_liked is None:
         return jsonify({"error": "Eksik veri: question_id veya is_liked boş olamaz."}), 400
@@ -19,7 +19,7 @@ def store_feedback():
     if not question:
         return jsonify({"error": "Belirtilen question_id veritabanında bulunamadı."}), 404
 
-    # ✅ feedback_type = "like" / "dislike"
+
     feedback_type = "like" if is_liked else "dislike"
 
     new_feedback = Feedback(

@@ -1,13 +1,18 @@
 import os
 import json
+from flask import Blueprint, request, jsonify, send_file
+from sqlalchemy import func, extract
+from datetime import datetime, timedelta
 
-from flask import Blueprint, request, jsonify
-from app.db.models import db, Question,Feedback
+
+from app.db.models import db, Question, Feedback, ChatLog, PendingQuestion
+from scripts.model_inference import generate_answer
+
 admin_bp = Blueprint("admin", __name__)
 
 @admin_bp.route("/api/unapproved_questions", methods=["GET"])
 def get_unapproved_questions():
-    questions = Question.query.filter_by(is_approved=False).all()
+    questions = PendingQuestion.query.order_by(PendingQuestion.created_at.desc()).all()
     result = [{"id": q.id, "question": q.question, "answer": q.answer or ""} for q in questions]
     return jsonify({"questions": result})
 
@@ -15,22 +20,59 @@ def get_unapproved_questions():
 @admin_bp.route("/api/approve_answer", methods=["POST"])
 def approve_answer():
     data = request.get_json()
-    question_id = data.get("question_id")
+    pending_id = data.get("question_id")
     new_answer = data.get("answer", "").strip()
 
-    if not question_id or not new_answer:
+    if not pending_id or not new_answer:
         return jsonify({"error": "Eksik bilgi"}), 400
 
-    question = Question.query.get(question_id)
-    if not question:
-        return jsonify({"error": "Soru bulunamadı"}), 404
+    pending_q = PendingQuestion.query.get(pending_id)
+    if not pending_q:
+        return jsonify({"error": "Bekleyen soru bulunamadı"}), 404
+    
+    existing_q = Question.query.filter_by(question=pending_q.question).first()
+    
+    if existing_q:
+        existing_q.answer = new_answer
+        existing_q.is_approved = True
+        existing_q.model_quality_score = 100
+    else:
+        new_q = Question(
+            question=pending_q.question,
+            answer=new_answer,
+            is_approved=True,
+            source=pending_q.suggested_source, 
+            model_quality_score=100
+        )
+        db.session.add(new_q)
 
-    question.answer = new_answer
-    question.is_approved = True
+    db.session.delete(pending_q)
     db.session.commit()
 
     return jsonify({"status": "ok"}), 200
-# admin_routes.py
+    
+    
+
+@admin_bp.route("/api/reject_answer/<int:question_id>", methods=["DELETE"])  
+def reject_answer(question_id):
+
+    pending_q = PendingQuestion.query.get(question_id)
+    
+    if pending_q:
+        db.session.delete(pending_q)
+        db.session.commit()
+        return jsonify({"success": True})
+    
+
+    question = Question.query.get(question_id)
+    if question:
+        db.session.delete(question)
+        db.session.commit()
+        return jsonify({"success": True})
+
+    return jsonify({"error": "Soru bulunamadı"}), 404
+      
+      
 @admin_bp.route("/api/feedback_logs", methods=["GET"])
 def get_feedback_logs():
     feedbacks = (
@@ -61,34 +103,26 @@ def get_feedback_logs():
     return jsonify({"feedback": result})
 
 
-
-# app/routes/admin_routes.py
-
-from flask import jsonify
-from sqlalchemy.sql import func
-from app.db.models import ChatLog, Feedback, Question
-from datetime import datetime, timedelta
-
 @admin_bp.route("/api/stats", methods=["GET"])
 def get_statistics():
     now = datetime.utcnow()
     start_of_day = datetime(now.year, now.month, now.day)
     start_of_week = now - timedelta(days=7)
 
-    # Günlük toplam mesaj sayısı
+
     daily_messages = ChatLog.query.filter(ChatLog.timestamp >= start_of_day).count()
 
-    # Haftalık toplam mesaj sayısı
+
     weekly_messages = ChatLog.query.filter(ChatLog.timestamp >= start_of_week).count()
 
-    # Toplam onay bekleyen soru
+
     unapproved_count = Question.query.filter_by(is_approved=False).count()
 
-    # Toplam 👍 ve 👎 sayısı
+
     total_likes = Feedback.query.filter_by(feedback_type="like").count()
     total_dislikes = Feedback.query.filter_by(feedback_type="dislike").count()
 
-    # En çok beğenilen 5 cevap
+
     top_answers = (
         db.session.query(Question.answer, func.count(Feedback.id).label("likes"))
         .join(Feedback, Feedback.question_id == Question.id)
@@ -115,7 +149,6 @@ def get_analytics_data():
     feedback_likes = db.session.query(Feedback).filter_by(feedback_type="like").count()
     feedback_dislikes = db.session.query(Feedback).filter_by(feedback_type="dislike").count()
 
-    from sqlalchemy import extract, func
     hourly_distribution = db.session.query(
         func.extract('hour', ChatLog.timestamp).label('hour'),
         func.count().label('count')
@@ -132,7 +165,7 @@ def get_analytics_data():
     })
 
 
-# admin_routes.py
+
 @admin_bp.route("/api/questions_with_answers", methods=["GET"])
 def get_questions_with_answers():
     questions = Question.query.filter(Question.is_approved == True).union(
@@ -149,7 +182,9 @@ def get_questions_with_answers():
         for q in questions
     ]
     return jsonify({"questions": result})
-# admin_routes.py
+
+
+
 @admin_bp.route("/api/update_answer", methods=["POST"])
 def update_answer():
     data = request.get_json()
@@ -162,6 +197,8 @@ def update_answer():
         db.session.commit()
         return jsonify({"status": "ok"})
     return jsonify({"status": "error", "message": "Soru bulunamadı"}), 404
+    
+    
 @admin_bp.route("/api/set_quality_score", methods=["POST"])
 def set_quality_score():
     data = request.get_json()
@@ -177,7 +214,8 @@ def set_quality_score():
         db.session.commit()
         return jsonify({"status": "ok"})
     return jsonify({"error": "Soru bulunamadı."}), 404
-# routes/admin_routes.py
+
+
 @admin_bp.route("/api/export_finetune_data", methods=["POST"])
 def export_finetune_data():
     approved_qas = Question.query.filter_by(is_approved=True).all()
@@ -209,17 +247,16 @@ def export_finetune_data():
         "exported": len(new_lines),
         "total": len(approved_qas)
     })
-# routes/admin_routes.py
-from flask import send_file
-import os
+
+
 
 @admin_bp.route("/api/download_fine_tune_data", methods=["GET"])
 def download_fine_tune_data():
-    file_path = "data/fine_tuning_data.jsonl"  # Yolunu kendi dosya konumuna göre güncelle
+    file_path = "data/fine_tuning_data.jsonl"  
     if not os.path.exists(file_path):
         return jsonify({"error": "Dosya bulunamadı"}), 404
     return send_file(file_path, as_attachment=True)
-from scripts.model_inference import generate_answer
+
 
 @admin_bp.route("/api/generate_alternative", methods=["POST"])
 def generate_alternative_answer():
@@ -253,15 +290,9 @@ def generate_alternative():
     question = request.json["question"]
     alt = generate_answer(original_question=question)
     return jsonify({"alternative": alt})
-@admin_bp.route("/api/reject_answer/<int:question_id>", methods=["POST"])
-def reject_answer(question_id):
-    question = Question.query.get(question_id)
-    if not question:
-        return jsonify({"error": "Soru bulunamadı"}), 404
+    
 
-    db.session.delete(question)  
-    db.session.commit()
-    return jsonify({"success": True})
+    
 @admin_bp.route("/api/mark_for_edit", methods=["POST"])
 def mark_for_edit():
     data = request.get_json()

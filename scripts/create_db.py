@@ -19,7 +19,7 @@ def create_everything():
         # ---------------------------------------------------------
         print("[*] Sistem başlatılıyor... Postgres sunucusuna bağlanılıyor...")
         conn = psycopg2.connect(dbname="postgres", **DB_CONFIG)
-        conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT) # CREATE DATABASE işlemi transaksiyon bloğunda çalışmaz
+        conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         cursor = conn.cursor()
 
         # ---------------------------------------------------------
@@ -30,13 +30,10 @@ def create_everything():
         
         if not exists:
             print(f"[*] '{DB_NAME}' veritabanı tespit edilemedi. Oluşturma işlemi başlatılıyor...")
-            
-            # KRİTİK DÜZELTME: SQL komutunu sql.SQL ve sql.Identifier ile formatlıyoruz
             create_db_query = sql.SQL("CREATE DATABASE {}").format(
                 sql.Identifier(DB_NAME)
             )
             cursor.execute(create_db_query)
-            
             print(f"✅ '{DB_NAME}' veritabanı başarıyla oluşturuldu.")
         else:
             print(f"[*] '{DB_NAME}' veritabanı zaten mevcut. Tablo kurulumuna geçiliyor.")
@@ -51,13 +48,9 @@ def create_everything():
         conn = psycopg2.connect(dbname=DB_NAME, **DB_CONFIG)
         cursor = conn.cursor()
 
-        # Enable pg_trgm extension for similarity() function
+        # pg_trgm uzantısı
         print("[*] PostgreSQL uzantıları kontrol ediliyor...")
-        cursor.execute("""
-            SELECT EXISTS (
-                SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm'
-            );
-        """)
+        cursor.execute("SELECT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm');")
         extension_exists = cursor.fetchone()[0]
         
         if not extension_exists:
@@ -67,12 +60,11 @@ def create_everything():
                 conn.commit()
                 print("✅ 'pg_trgm' uzantısı başarıyla etkinleştirildi.")
             except Exception as e:
-                print(f"⚠ 'pg_trgm' uzantısı etkinleştirilemedi: {e}")
-                print("   Bu uzantı 'similarity()' fonksiyonu için gereklidir.")
+                print(f"⚠ 'pg_trgm' hata: {e}")
         else:
             print("✅ 'pg_trgm' uzantısı zaten etkin.")
 
-        # Check if tables exist
+        # Tablo Varlık Kontrolü
         cursor.execute("""
             SELECT EXISTS (
                 SELECT FROM information_schema.tables 
@@ -82,8 +74,19 @@ def create_everything():
         """)
         tables_exist = cursor.fetchone()[0]
 
+        # --- YENİ TABLO SQL TANIMI ---
+        create_pending_table_sql = """
+            CREATE TABLE IF NOT EXISTS pending_questions (
+                id SERIAL PRIMARY KEY,
+                question TEXT NOT NULL,
+                answer TEXT,
+                suggested_source TEXT DEFAULT 'manual',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """
+
         if not tables_exist:
-            # Tabloları sıfırdan kur (Schema Initialization)
+            # Tabloları sıfırdan kur
             print("[*] Tablolar oluşturuluyor...")
             cursor.execute("""
                 CREATE TABLE questions (
@@ -112,33 +115,48 @@ def create_everything():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             """)
+            # Yeni tabloyu da ekliyoruz
+            cursor.execute(create_pending_table_sql)
             print("✅ Tablolar başarıyla oluşturuldu.")
         else:
-            # Tablolar mevcut, eksik sütunları ekle (Migration)
-            print("[*] Tablolar mevcut. Eksik sütunlar kontrol ediliyor...")
+            # Migration İşlemleri
+            print("[*] Tablolar mevcut. Eksik sütunlar ve tablolar kontrol ediliyor...")
             
-            # Check and add model_quality_score to questions table
+            # 1. model_quality_score kontrolü
             cursor.execute("""
-                SELECT column_name 
-                FROM information_schema.columns 
+                SELECT column_name FROM information_schema.columns 
                 WHERE table_name='questions' AND column_name='model_quality_score';
             """)
             if not cursor.fetchone():
-                print("[*] 'model_quality_score' sütunu questions tablosuna ekleniyor...")
+                print("[*] 'model_quality_score' sütunu ekleniyor...")
                 cursor.execute("ALTER TABLE questions ADD COLUMN model_quality_score INTEGER;")
-                print("✅ 'model_quality_score' sütunu eklendi.")
+                print("✅ 'model_quality_score' eklendi.")
             
-            # Check and add session_id to feedback table
+            # 2. session_id kontrolü
             cursor.execute("""
-                SELECT column_name 
-                FROM information_schema.columns 
+                SELECT column_name FROM information_schema.columns 
                 WHERE table_name='feedback' AND column_name='session_id';
             """)
             if not cursor.fetchone():
-                print("[*] 'session_id' sütunu feedback tablosuna ekleniyor...")
+                print("[*] 'session_id' sütunu ekleniyor...")
                 cursor.execute("ALTER TABLE feedback ADD COLUMN session_id TEXT;")
-                print("✅ 'session_id' sütunu eklendi.")
-            
+                print("✅ 'session_id' eklendi.")
+
+            # 3. YENİ TABLO KONTROLÜ (pending_questions)
+            cursor.execute("""
+                SELECT EXISTS (
+                    SELECT FROM information_schema.tables 
+                    WHERE table_schema = 'public' 
+                    AND table_name = 'pending_questions'
+                );
+            """)
+            if not cursor.fetchone()[0]:
+                print("[*] 'pending_questions' tablosu bulunamadı, oluşturuluyor...")
+                cursor.execute(create_pending_table_sql)
+                print("✅ 'pending_questions' tablosu oluşturuldu.")
+            else:
+                print("✅ 'pending_questions' tablosu zaten mevcut.")
+
             print("✅ Veritabanı şeması güncellendi.")
 
         conn.commit()
